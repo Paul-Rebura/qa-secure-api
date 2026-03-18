@@ -6,12 +6,29 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  job1:
+    build:
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      steps:
+        - name: checkout
+          uses: actions/checkout@v4
 
-      - name: Display "Hello, CI!"
-        run: echo "Hello, CI!"
+        - name: Display "Hello, CI!"
+          run: echo "Hello, CI!"
+
+        - name: Install cowsay
+          run: npm install -g cowsay
+        
+        - name: cowsay message
+          run: cowsay "Pipeline works!"
+
+  jobs2:
+    build:
+      runs-on: ubuntu-latest
+      needs: job1
+      steps:
+        - name: Display 2nd message
+          run: echo "Hello from Paul"
+
+    
