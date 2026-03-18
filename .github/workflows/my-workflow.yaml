@@ -1,0 +1,17 @@
+name: Display the "Hello, CI!"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Display "Hello, CI!"
+        run: echo "Hello, CI!"
