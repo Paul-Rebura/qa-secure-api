@@ -19,7 +19,7 @@ module.exports = function() {
 
   /* istanbul ignore next */
   app.get('/hi', (req, res) => {
-    res.status(200).send('Hi! Paul from Rebura here!');
+    res.status(200).send('Hi! Paul from Rebura here! This is the dev env');
   });
 
   return app;

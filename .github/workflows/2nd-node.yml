@@ -1,0 +1,31 @@
+name: Node.js CI # 1. workflow
+
+on: # 2. events
+  push:
+    branches: [ dev ] # the action is triggered when is pushed on main branch
+  pull_request:
+    branches: [ dev ] # the action is triggered when there is a pull on main branch
+
+jobs: # 3. jobs
+  build:
+    runs-on: ubuntu-latest # 5. runner - uses the latest version of ubuntu to run the below steps
+
+    steps: # 4. steps - it checks out the repository && it sets up the Node.js environment && it sets the Node.js version to 20.x
+      - uses: actions/checkout@v4 
+      - uses: actions/setup-node@v4  
+        with:
+          node-version: '20.x'
+      - name: Set environment variables # it sets up the environment variables && creates a file called "$GITHUB_ENV" with the content "NODE_ENV=test"
+        run: echo "NODE_ENV=test" >> $GITHUB_ENV
+      - name: Prepare dependencies  # runs 2 commands to installs packages from the package-lock. json file and it runs build if the build is installed
+        run: | 
+          npm ci  
+          npm run build --if-present
+      - name: Run all tests # runs the tests
+        run: npm test 
+      - name: Archive test and code-coverage results # uses the upload artifact action to upload the test results && runs the action always, even if the tests fail && the file where the results are uploaded
+        uses: actions/upload-artifact@v4 
+        if: ${{ always() }} 
+        with:
+          name: test-and-code-coverage-report
+          path: test-results.txt  
